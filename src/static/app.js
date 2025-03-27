@@ -20,11 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        const participantsList = details.participants.length > 0
+          ? `
+            <div class="participants">
+              <h5>Current Participants:</h5>
+              <ul>
+                ${details.participants.map(email => `<li>${email}</li>`).join('')}
+              </ul>
+            </div>
+          `
+          : '<p class="no-participants">No participants yet</p>';
+
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${participantsList}
         `;
 
         activitiesList.appendChild(activityCard);
@@ -79,6 +91,24 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.classList.remove("hidden");
       console.error("Error signing up:", error);
     }
+  });
+
+  // Theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  const html = document.documentElement;
+  
+  // Check for saved theme preference
+  const savedTheme = localStorage.getItem("theme") || "light";
+  html.setAttribute("data-theme", savedTheme);
+  themeToggle.innerHTML = savedTheme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode";
+
+  themeToggle.addEventListener("click", () => {
+    const currentTheme = html.getAttribute("data-theme");
+    const newTheme = currentTheme === "light" ? "dark" : "light";
+    
+    html.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    themeToggle.innerHTML = newTheme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode";
   });
 
   // Initialize app
