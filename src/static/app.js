@@ -93,6 +93,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  const html = document.documentElement;
+  
+  // Check for saved theme preference
+  const savedTheme = localStorage.getItem("theme") || "light";
+  html.setAttribute("data-theme", savedTheme);
+  themeToggle.innerHTML = savedTheme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode";
+
+  themeToggle.addEventListener("click", () => {
+    const currentTheme = html.getAttribute("data-theme");
+    const newTheme = currentTheme === "light" ? "dark" : "light";
+    
+    html.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    themeToggle.innerHTML = newTheme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode";
+  });
+
   // Initialize app
   fetchActivities();
 });
